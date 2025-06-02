@@ -1,0 +1,36 @@
+Diseñar y escribir una función de tipo double llamada RedondearCentesima que devuelva un numero double redondeado a dos posiciones decimales. Usarla en un programa o procedimiento que la invoque. 
+Por ejemplo: RedondearCentesima(1.236589) debe devolver 1.24 mientras que RedondearCentesima(1.9238) debe devolver 1.92 Sugerencia: utilizar multiplicaciones, módulo y divisiones para obtener el resultado.
+
+using System;
+
+class Programa
+{
+    // Función que redondea a dos decimales usando aritmética
+    static double RedondearCentesima(double numero)
+    {
+    //Multiplicamos por 100 para llevar dos cifras decimales a la parte entera.
+        numero = numero * 100;
+        ////El cast (int) trunca (corta) la parte decimal, no redondea, pero como le sumamos 0.5 antes, logramos el efecto del redondeo 
+        numero = (int)(numero + 0.5);// Truncamos y sumamos 0.5 para redondear
+        return numero / 100.0;            //Dividimos por 100.0 para volver a tener dos cifras decimales:
+        
+//Por qué sumar 0.5?
+//Cuando sumás 0.5 a un número decimal y lo truncás, estás aplicando el redondeo clásico:
+//Si el decimal es menor a .5 → no pasa al siguiente entero
+//Si el decimal es mayor o igual a .5 → sube al siguiente entero
+//Ejemplos:
+//(int)(3.2 + 0.5) = (int)(3.7) = 3
+//(int)(3.7 + 0.5) = (int)(4.2) = 4
+
+
+    }
+
+    static void Main()
+    {
+        double resultado1 = RedondearCentesima(1.236589); // Debe dar 1.24
+        double resultado2 = RedondearCentesima(1.9238);   // Debe dar 1.92
+
+        Console.WriteLine("Resultado 1: " + resultado1);
+        Console.WriteLine("Resultado 2: " + resultado2);
+    }
+}
