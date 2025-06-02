@@ -1,0 +1,26 @@
+﻿namespace tp6_ej7;
+
+//    Creá un método ConvertirSegundos que reciba un número entero de segundos y
+//devuelva la cantidad de minutos y segundos restantes como parámetros out. 
+using System;
+
+class Programa
+{
+    // Método que convierte segundos a minutos y segundos restantes
+    static void ConvertirSegundos(int totalSegundos, out int minutos, out int segundos)
+    {
+        minutos = totalSegundos / 60;     // División entera para obtener los minutos
+        segundos = totalSegundos % 60;    // Usa el operador % (módulo) para obtener los segundos que sobran.
+
+    }
+
+        static void Main()
+    {
+        int total = 135; // Ejemplo: 135 segundos
+
+        ConvertirSegundos(total, out int mins, out int segs);
+
+        Console.WriteLine($"Total: {total} segundos → {mins} minutos y {segs} segundos.");
+        // Resultado: 135 segundos → 2 minutos y 15 segundos
+    }
+}
