@@ -1,0 +1,75 @@
+namespace ej10
+{
+    //    Una aplicación de encuestas almacenó en un arreglo de 100 posiciones las
+    //respuestas de los clientes sobre su nivel de satisfacción(valores del 1 al 10). 
+    //a.Hacer un procedimiento que cargue en los valores(1-10) de forma aleatoria.
+    //    b.Hacer un procedimiento para contar cuántas respuestas hay en cada valor
+    //    del 1 al 10. 
+    //c.Hacer una función que devuelva el valor más frecuente.
+    //d.Mostrar los resultados desde el programa principal.
+    using System;
+
+    class Programa
+    {
+        static void CargarRespuestasAleatorias(int[] respuestas)
+        {
+            Random rand = new Random();//crea una nueva instancia del generador de números aleatorios.
+            //Creá un generador de números aleatorios y llamalo rand
+            for (int i = 0; i < respuestas.Length; i++)
+            {
+                respuestas[i] = rand.Next(1, 11); // Genera número entre 1 y 10
+            }
+        }
+
+        static void ContarFrecuencias(int[] respuestas, int[] frecuencias)
+        {
+            for (int i = 0; i < respuestas.Length; i++)
+            {
+                int valor = respuestas[i];
+                frecuencias[valor - 1]++; // El índice 0 representa el valor 1, etc.
+            }
+        }
+
+        static int ValorMasFrecuente(int[] frecuencias)
+        {
+            int maxFrecuencia = frecuencias[0];
+            int valor = 1;
+
+            for (int i = 1; i < frecuencias.Length; i++)
+            {
+                if (frecuencias[i] > maxFrecuencia)
+                {
+                    maxFrecuencia = frecuencias[i];
+                    valor = i + 1; // Sumamos 1 porque el índice 0 representa el valor 1
+                }
+            }
+
+            return valor;
+        }
+
+        static void Main()
+        {
+            int[] respuestas = new int[100];
+            int[] frecuencias = new int[10]; // índice 0 → valor 1, índice 9 → valor 10
+
+            // a. Cargar respuestas aleatorias
+            CargarRespuestasAleatorias(respuestas);
+
+            // b. Contar frecuencias
+            ContarFrecuencias(respuestas, frecuencias);
+
+            // c. Calcular el valor más frecuente
+            int masFrecuente = ValorMasFrecuente(frecuencias);
+
+            // d. Mostrar resultados
+            Console.WriteLine("Frecuencia de respuestas:");
+            for (int i = 0; i < frecuencias.Length; i++)
+            {
+                Console.WriteLine($"Valor {i + 1}: {frecuencias[i]} respuestas");
+            }
+
+            Console.WriteLine($"\nEl valor más frecuente fue: {masFrecuente}");//\n → nueva línea
+        }
+    }
+
+}
