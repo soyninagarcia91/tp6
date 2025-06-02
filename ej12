@@ -1,0 +1,120 @@
+ //Una empresa quiere analizar las ventas de una de sus sucursales, para ello debe
+    //cargar las ventas mensuales en un arreglo de 12 posiciones(una por mes) para
+    //realizar las siguientes estadísticas: 
+    //a.Hacer un procedimiento que se encargue de cargar los valores de las ventas.
+    //b.Hacer un procedimiento que muestre todas las ventas.
+    //c.Hacer una función que devuelva el total anual vendido. 
+    //d.Hacer otra función que devuelva el promedio mensual de ventas. 
+    //e.Hacer una función que muestre los meses donde las ventas superaron el
+    //promedio anual. 
+    //f.
+    //Hacer una función donde se muestren los meses que las ventas estuvieron
+    //por debajo del promedio anual.
+    //g.Desde el programa principal llamar a los métodos correspondientes y mostrar
+    //los resultados.
+    
+    class Programa
+    {
+        static string[] nombresMeses = {
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    };
+
+        // a. Cargar ventas
+        static void CargarVentas(double[] ventas)
+        {
+            for (int i = 0; i < ventas.Length; i++)
+            {
+                Console.Write($"Ingrese ventas para {nombresMeses[i]}: ");
+                ventas[i] = double.Parse(Console.ReadLine());
+            }
+        }
+
+        // b. Mostrar todas las ventas
+        static void MostrarVentas(double[] ventas)
+        {
+            Console.WriteLine("\n📊 Ventas mensuales:");
+            for (int i = 0; i < ventas.Length; i++)
+            {
+                Console.WriteLine($"{nombresMeses[i]}: ${ventas[i]:F2}");
+            }
+        }
+
+        // c. Total anual vendido
+        static double TotalAnual(double[] ventas)
+        {
+            double total = 0;
+            foreach (double venta in ventas)
+                total += venta;
+            return total;
+        }
+
+        // d. Promedio mensual
+        static double PromedioMensual(double[] ventas)
+        {
+            return TotalAnual(ventas) / ventas.Length;
+        }
+
+        // e. Mostrar meses con ventas superiores al promedio
+        static void MostrarMesesSuperioresPromedio(double[] ventas, double promedio)
+        {
+            Console.WriteLine("\n📈 Meses con ventas superiores al promedio:");
+            for (int i = 0; i < ventas.Length; i++)
+            {
+                if (ventas[i] > promedio)
+                    Console.WriteLine($"{nombresMeses[i]}: ${ventas[i]:F2}");
+            }
+        }
+
+        // f. Mostrar meses con ventas inferiores al promedio
+        static void MostrarMesesInferioresPromedio(double[] ventas, double promedio)
+        {
+            Console.WriteLine("\n📉 Meses con ventas inferiores al promedio:");
+            for (int i = 0; i < ventas.Length; i++)
+            {
+                if (ventas[i] < promedio)
+                    Console.WriteLine($"{nombresMeses[i]}: ${ventas[i]:F2}");
+            }
+        }
+
+        // g. Programa principal
+        static void Main()
+        {
+            double[] ventasMensuales = new double[12];
+
+            // a. Cargar ventas
+            CargarVentas(ventasMensuales);
+
+            // b. Mostrar todas las ventas
+            MostrarVentas(ventasMensuales);
+
+            // c. Total anual vendido
+            double total = TotalAnual(ventasMensuales);
+            Console.WriteLine($"\n🧾 Total anual vendido: ${total:F2}");
+
+            // d. Promedio mensual
+            double promedio = PromedioMensual(ventasMensuales);
+            Console.WriteLine($"📌 Promedio mensual: ${promedio:F2}");
+
+            // e. Meses con ventas mayores al promedio
+            MostrarMesesSuperioresPromedio(ventasMensuales, promedio);
+
+            // f. Meses con ventas menores al promedio
+            MostrarMesesInferioresPromedio(ventasMensuales, promedio);
+        }
+    }
+
+}
+//Qué hace cada parte?
+//CargarVentas: pide al usuario que cargue las ventas de los 12 meses.
+
+//MostrarVentas: muestra las ventas mes a mes con nombre y valor.
+
+//TotalAnual: suma las ventas para obtener el total del año.
+
+//PromedioMensual: calcula el promedio dividiendo el total entre 12.
+
+//MostrarMesesSuperioresPromedio: muestra los meses con ventas mayores al promedio.
+
+//MostrarMesesInferioresPromedio: muestra los meses con ventas menores al promedio.
+
