@@ -1,0 +1,49 @@
+namespace ej9
+//Escriba una función llamada EsBisiesto que permita ingresar un numero de año y  devuelva verdadero en caso que el año sea bisiesto, o falso cuando no lo es.Un año es bisiesto si: es divisible entre cuatro y(no es divisible entre 100 o es divisible entre 
+//400). Utilizarlo en un programa que permita ingresar dia, mes y año y muestre por
+//pantalla si la fecha es válida o no.
+{
+    using System;
+
+    class Programa
+    {
+        static bool EsBisiesto(int anio)
+        {
+            return (anio % 4 == 0) && ((anio % 100 != 0) || (anio % 400 == 0));// Verifica si el año es divisible por 4.// Verifica que NO sea divisible por 100
+            // Pero si sí es divisible por 100, entonces debe ser divisible por 400 para seguir siendo bisiesto
+        }
+
+        static bool FechaValida(int dia, int mes, int anio)
+        {
+            if (mes < 1 || mes > 12) return false;
+            if (dia < 1) return false;
+
+            int[] diasPorMes = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+            // Si el año es bisiesto, febrero tiene 29 días
+            if (EsBisiesto(anio))
+                diasPorMes[1] = 29;
+
+            if (dia > diasPorMes[mes - 1]) return false;
+
+            return true;
+        }
+
+        static void Main()
+        {
+            Console.Write("Ingrese día: ");
+            int dia = int.Parse(Console.ReadLine());
+
+            Console.Write("Ingrese mes: ");
+            int mes = int.Parse(Console.ReadLine());
+
+            Console.Write("Ingrese año: ");
+            int anio = int.Parse(Console.ReadLine());
+
+            if (FechaValida(dia, mes, anio))
+                Console.WriteLine("✅ La fecha es válida.");
+            else
+                Console.WriteLine("❌ La fecha no es válida.");
+        }
+    }
+}
