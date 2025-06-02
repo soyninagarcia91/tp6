@@ -1,0 +1,144 @@
+ La misma empresa del punto anterior decidió ahora repetir el proceso de análisis de
+//ventas extendiéndolo a sus 5 sucursales.Para ello se necesita un arreglo de
+//nombres de sucursales y una matriz que permita identificar las ventas de cada mes
+//en cada sucursal.Luego se deben realizar las siguientes estadísticas: 
+//a.Mostrar la sucursal que más vendió en el año
+//b. Mostrar el mes de mayores ventas en la sucursal que más vendió en el año
+//c. Elegir una sucursal y mostrar las ventas mensuales que tuvo
+//d.Mostrar el promedio mensual de ventas de la empresa, y luego el promedio
+//anual de ventas. (considerando las ventas de todas las sucursales)
+//{
+
+{
+
+    using System;
+
+    class Programa
+    {
+        static string[] meses = {
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    };
+
+        // Cargar nombres y ventas de las sucursales
+        static void CargarDatos(string[] sucursales, double[,] ventas)
+        {
+            for (int i = 0; i < sucursales.Length; i++)
+            {
+                Console.Write($"Ingrese nombre de la sucursal {i + 1}: ");
+                sucursales[i] = Console.ReadLine();
+
+                for (int j = 0; j < 12; j++)
+                {
+                    Console.Write($"Ingrese ventas de {sucursales[i]} en {meses[j]}: ");
+                    ventas[i, j] = double.Parse(Console.ReadLine());
+                }
+                Console.WriteLine();
+            }
+        }
+
+        // a. Sucursal que más vendió en el año
+        static int SucursalMasVendedora(double[,] ventas)
+        {
+            double maxTotal = 0;
+            int indiceMax = 0;
+
+            for (int i = 0; i < ventas.GetLength(0); i++)
+            {
+                double total = 0;
+                for (int j = 0; j < 12; j++)
+                    total += ventas[i, j];
+
+                if (total > maxTotal)
+                {
+                    maxTotal = total;
+                    indiceMax = i;
+                }
+            }
+
+            return indiceMax;
+        }
+
+        // b. Mes de mayores ventas en una sucursal específica
+        static int MesMayorVentas(double[,] ventas, int sucursal)
+        {
+            double max = ventas[sucursal, 0];
+            int mesMax = 0;
+
+            for (int j = 1; j < 12; j++)
+            {
+                if (ventas[sucursal, j] > max)
+                {
+                    max = ventas[sucursal, j];
+                    mesMax = j;
+                }
+            }
+
+            return mesMax;
+        }
+
+        // c. Mostrar ventas mensuales de una sucursal
+        static void MostrarVentasSucursal(string[] sucursales, double[,] ventas)
+        {
+            Console.Write("\nIngrese nombre de la sucursal a consultar: ");
+            string nombre = Console.ReadLine();
+
+            int indice = Array.IndexOf(sucursales, nombre);
+
+            if (indice == -1)
+            {
+                Console.WriteLine("❌ Sucursal no encontrada.");
+                return;
+            }
+
+            Console.WriteLine($"\n📊 Ventas de {sucursales[indice]}:");
+            for (int j = 0; j < 12; j++)
+            {
+                Console.WriteLine($"{meses[j]}: ${ventas[indice, j]:F2}");
+            }
+        }
+
+        // d. Promedio mensual y promedio anual de toda la empresa
+        static void MostrarPromedios(double[,] ventas)
+        {
+            double totalGeneral = 0;
+
+            for (int i = 0; i < ventas.GetLength(0); i++)
+            {
+                for (int j = 0; j < 12; j++)
+                    totalGeneral += ventas[i, j];
+            }
+
+            double promedioMensual = totalGeneral / (ventas.GetLength(0) * 12);
+            double promedioAnual = totalGeneral / ventas.GetLength(0);
+
+            Console.WriteLine($"\n📌 Promedio mensual general: ${promedioMensual:F2}");
+            Console.WriteLine($"📌 Promedio anual por sucursal: ${promedioAnual:F2}");
+        }
+
+        // Programa principal
+        static void Main()
+        {
+            string[] sucursales = new string[5];
+            double[,] ventas = new double[5, 12];
+
+            // Cargar datos
+            CargarDatos(sucursales, ventas);
+
+            // a. Sucursal que más vendió
+            int mejorSucursal = SucursalMasVendedora(ventas);
+            Console.WriteLine($"\n🏆 La sucursal que más vendió fue: {sucursales[mejorSucursal]}");
+
+            // b. Mes de mayores ventas en esa sucursal
+            int mejorMes = MesMayorVentas(ventas, mejorSucursal);
+            Console.WriteLine($"📈 El mes de mayores ventas en {sucursales[mejorSucursal]} fue: {meses[mejorMes]}");
+
+            // c. Mostrar ventas de una sucursal elegida
+            MostrarVentasSucursal(sucursales, ventas);
+
+            // d. Promedios generales
+            MostrarPromedios(ventas);
+        }
+    }
+
+}
