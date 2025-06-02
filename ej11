@@ -1,0 +1,89 @@
+namespace ej11
+//     Una aplicación de encuestas almacenó en un arreglo de 100 posiciones las
+//respuestas de los clientes sobre su nivel de satisfacción(valores del 1 al 10). 
+//a.Hacer un procedimiento que pida los valores para cargar en el arreglo.
+//b.Hacer un procedimiento para contar cuántas respuestas hay en cada valor
+//del 1 al 10. 
+//c.Hacer una función que devuelva el valor más frecuente.
+//d.Mostrar los resultados desde el programa principa
+{
+    using System;
+
+    class Programa
+    {
+        // a. Procedimiento para cargar los 100 valores manualmente
+        static void CargarRespuestas(int[] respuestas)
+        {
+            Console.WriteLine("Ingrese 100 respuestas (valores del 1 al 10):");
+
+            for (int i = 0; i < respuestas.Length; i++)
+            {
+                int valor;
+
+                // Validación para que solo se acepten números del 1 al 10
+                do
+                {
+                    Console.Write($"Respuesta {i + 1}: ");
+                    valor = int.Parse(Console.ReadLine());
+                    if (valor < 1 || valor > 10)
+                        Console.WriteLine("❌ Valor inválido. Ingrese un número del 1 al 10.");
+                } while (valor < 1 || valor > 10);
+
+                respuestas[i] = valor;
+            }
+        }
+
+        // b. Procedimiento para contar cuántas veces aparece cada valor (1-10)
+        static void ContarFrecuencias(int[] respuestas, int[] frecuencias)
+        {
+            for (int i = 0; i < respuestas.Length; i++)
+            {
+                int valor = respuestas[i];
+                frecuencias[valor - 1]++;
+            }
+        }
+
+        // c. Función que devuelve el valor más frecuente
+        static int ValorMasFrecuente(int[] frecuencias)
+        {
+            int maxFrecuencia = frecuencias[0];
+            int valor = 1;
+
+            for (int i = 1; i < frecuencias.Length; i++)
+            {
+                if (frecuencias[i] > maxFrecuencia)
+                {
+                    maxFrecuencia = frecuencias[i];
+                    valor = i + 1;
+                }
+            }
+
+            return valor;
+        }
+
+        // d. Mostrar resultados desde el programa principal
+        static void Main()
+        {
+            int[] respuestas = new int[100];  // Arreglo para las 100 respuestas
+            int[] frecuencias = new int[10];  // Arreglo para contar respuestas de 1 a 10
+
+            // a. Cargar respuestas ingresadas por el usuario
+            CargarRespuestas(respuestas);
+
+            // b. Contar frecuencias
+            ContarFrecuencias(respuestas, frecuencias);
+
+            // c. Obtener valor más frecuente
+            int masFrecuente = ValorMasFrecuente(frecuencias);
+
+            // d. Mostrar resultados
+            Console.WriteLine("\n📊 Resultados:");
+            for (int i = 0; i < frecuencias.Length; i++)
+            {
+                Console.WriteLine($"Valor {i + 1}: {frecuencias[i]} respuestas");
+            }
+
+            Console.WriteLine($"\n🔝 El valor más frecuente fue: {masFrecuente}");
+        }
+    }
+}
