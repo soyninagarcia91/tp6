@@ -1,3 +1,16 @@
+//Considerando la siguiente función 
+static int Invertir(int numero) 
+{ 
+int invertido = 0; 
+while (numero > 0) 
+{ 
+invertido = invertido * 10 + (numero % 10); 
+numero = numero / 10; 
+} 
+return invertido; 
+} 
+//Realice un programa que pida al usuario un número entero y utilice dicha función 
+para determinar si el número ingresado es capicúa o no. 
 using System;
 
 class Programa
