@@ -1,0 +1,151 @@
+using System;
+//// 1.Crea un juego de adivinanza. El programa debe utilizar un arreglo de 20 lugares con 
+//números cargados aleatoriamente entre 1 y 1000. Se deben utilizar los procedimientos  
+//• cargarValoresAleatorios(int[] aNumeros) que asigne los valores aleatorios en el 
+//arreglo.  
+//• ordenarArregloAleatorios(int[] aNumeros) que ordena los elementos del arreglo de 
+//forma creciente. 
+//• int buscarNumero(int[] aNumeros, int valorObjetivo) que busca de forma eficiente 
+//(búsqueda binaria) el valor objetivo en el arreglo y retorna su índice, si no lo 
+//encuentra retorna -1. 
+//El menú del juego debe tener opciones para: 
+//a) comenzar una nueva partida (vuelve a cargar los valores aleatorios del arreglo) 
+//b) ingresar un numero para ver si existe en el arreglo 
+//c) salir 
+//Funcionamiento esperado: cuando el usuario ingresa un numero para adivinar el 
+//programa lo buscará en el arreglo, si el numero existe mostrará la posición donde se 
+//encuentra, si no existe mostrará un mensaje. Luego volverá al menú.
+////
+
+class JuegoAdivinanza
+{ const int TAM = 20;   // globales a todos los metodos 
+    static int[] numeros = new int[TAM]; // globales a todos los metodos 
+     static bool partidaIniciada = false; // globales a todos los metodos 
+    
+    // Procedimiento que carga valores aleatorios entre 1 y 1000
+    static void CargarValoresAleatorios(int[] aNumeros)
+    {
+        Random rand = new Random();
+        for (int i = 0; i < aNumeros.Length; i++)
+        {
+            aNumeros[i] = rand.Next(1, 1001);
+        }
+        Console.WriteLine("Nueva partida cargada.");
+        partidaIniciada = true;
+    }
+    
+    
+    // Procedimiento que ordena el arreglo de forma creciente (método burbuja)
+    static void OrdenarArreglo(int[] aNumeros)
+    {
+        for (int i = 0; i < aNumeros.Length - 1; i++)
+        {
+            for (int j = 0; j < aNumeros.Length - i - 1; j++)
+            {
+                if (aNumeros[j] > aNumeros[j + 1])
+                {
+                    int temp = aNumeros[j];
+                    aNumeros[j] = aNumeros[j + 1];
+                    aNumeros[j + 1] = temp;
+                }
+            }
+        }
+        Console.WriteLine("Arreglo ordenado.");
+    }
+
+    // Función que realiza una búsqueda binaria y devuelve el índice del número si lo encuentra
+    static int BuscarNumeroBinario(int[] aNumeros, int valorObjetivo)
+    {
+        int inicio = 0;
+        int fin = aNumeros.Length - 1;
+
+        while (inicio <= fin)
+        {
+            int medio = (inicio + fin) / 2;
+
+            if (aNumeros[medio] == valorObjetivo)
+                return medio;
+            else if (aNumeros[medio] < valorObjetivo)
+                inicio = medio + 1;
+            else
+                fin = medio - 1;
+        }
+
+        return -1;
+    }
+
+
+        // Procedimiento para mostrar el contenido del arreglo
+    static void MostrarArreglo(int[] arreglo)
+    {
+        Console.WriteLine("Contenido del arreglo:");
+        for (int i = 0; i < arreglo.Length; i++)
+        {
+            Console.Write(arreglo[i] + " ");
+        }
+        Console.WriteLine();
+    }
+    
+    
+    
+    
+            public static void Main(string[] args)
+    { 
+        bool salir = false;
+
+        while (!salir)
+        {
+            Console.WriteLine("\n===== MENÚ DEL JUEGO =====");
+            Console.WriteLine("1. Nueva partida (valores aleatorios)");
+            Console.WriteLine("2. Ingresar número para adivinar");
+            Console.WriteLine("3. Mostrar arreglo (opcional)");
+            Console.WriteLine("4. Salir");
+            Console.Write("Seleccione una opción: ");
+
+            string opcion = Console.ReadLine();
+
+            switch (opcion)
+            {
+                case "1":
+                    CargarValoresAleatorios(numeros);
+                    OrdenarArreglo(numeros);
+                    break;
+
+                case "2":
+                    if (!partidaIniciada)
+                    {
+                        Console.WriteLine("Primero debe iniciar una nueva partida.");
+                    }
+                    else
+                    {
+                        Console.Write("Ingrese un número a buscar: ");
+                        int num = Convert.ToInt32(Console.ReadLine());
+
+                        int indice = BuscarNumeroBinario(numeros, num);
+                        if (indice != -1)
+                            Console.WriteLine($"El número {num} se encuentra en la posición {indice}.");
+                        else
+                            Console.WriteLine("El número no se encuentra en el arreglo.");
+                    }
+                    break;
+
+                case "3":
+                    if (partidaIniciada)
+                        MostrarArreglo(numeros);
+                    else
+                        Console.WriteLine("No hay datos cargados.");
+                    break;
+
+                case "4":
+                    salir = true;
+                    Console.WriteLine("Fin del juego.");
+                    break;
+
+                default:
+                    Console.WriteLine("Opción inválida.");
+                    break;
+            }
+        }
+    }
+
+    }
