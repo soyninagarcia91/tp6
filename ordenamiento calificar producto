@@ -1,0 +1,190 @@
+
+ {
+     // Una empresa realizó una encuesta de satisfacción sobre un producto a 15 clientes, 
+ //    donde cada cliente calificó el producto con un puntaje entero entre 1 y 10. Se desea
+ //analizar los resultados.Nos encargaron crear un programa en C# que permita cargar los 
+ //nombres de los clientes y sus calificaciones al producto, para luego generar la siguiente
+ //información:
+ // ● Implementar un procedimiento llamado OrdenarBurbuja(int[] aCalificaciones,
+ //string[] aNombres, bool creciente)que implemente el ordenamiento burbuja
+ //para modificar la secuencia de elementos en ambos arreglos a la vez, considerando
+ //el orden deseado para las calificaciones, el parámetro booleano determina el tipo de
+ //ordenamiento creciente/decreciente.
+ // ● Mostrar la lista de clientes con las calificaciones de menor a mayor
+ // ● Mostrar quien le dio el menor puntaje al producto
+ // ● Mostrar quien le dio el mayor puntaje al producto
+ // ● Determinar si hubo(o no) calificaciones repetidas
+ 
+     using System;
+ 
+     class Programa
+     {
+         static void Menu()
+         {
+             Console.WriteLine("Seleccione una opción:");
+             Console.WriteLine("1 - Cargar calificaciones de los clientes");
+-            Console.WriteLine("2 - Ver la mejor calificación");
++            Console.WriteLine("2 - Ver la mayor calificación");
+             Console.WriteLine("3 - Ver la menor calificación");
+             Console.WriteLine("4 - Ver si hubo calificaciones repetidas");
+-            Console.WriteLine("5 - Ver listado completo");
++            Console.WriteLine("5 - Ver listado de menor a mayor");
+             Console.WriteLine("0 - Salir");
+         }
+ 
+         static void Cargar(out int[] calificaciones, out string[] nombres)
+         {
+             int cantidad = 15;
+             calificaciones = new int[cantidad];
+             nombres = new string[cantidad];
+ 
+             for (int i = 0; i < cantidad; i++)
+             {
+                 Console.Write($"Ingrese nombre del cliente {i + 1}: ");
+                 nombres[i] = Console.ReadLine();
+                 calificaciones[i] = PedirCalificacion(i + 1);
+             }
+         }
+ 
+         static int PedirCalificacion(int numeroCliente)
+         {
+             int calificacion;
+             Console.Write($"Ingrese calificación del cliente {numeroCliente}: ");
+ 
+             while (!int.TryParse(Console.ReadLine(), out calificacion) || calificacion < 0 || calificacion > 10)
+             {
+                 Console.WriteLine(" Calificación inválida. Ingrese un número del 0 al 10.");
+             }
+ 
+             return calificacion;
+         }
+ 
+         static void MostrarListado(int[] calificaciones, string[] nombres)
+         {
+             Console.WriteLine("\n Listado de calificaciones:");
+             for (int i = 0; i < calificaciones.Length; i++)
+             {
+                 Console.WriteLine($"{nombres[i]} → {calificaciones[i]}");
+             }
+         }
+ 
++        static void OrdenarBurbuja(int[] aCalificaciones, string[] aNombres, bool creciente)
++        {
++            int n = aCalificaciones.Length;
++            for (int i = 0; i < n - 1; i++)
++            {
++                for (int j = 0; j < n - 1 - i; j++)
++                {
++                    bool intercambio = (creciente && aCalificaciones[j] > aCalificaciones[j + 1]) ||
++                                       (!creciente && aCalificaciones[j] < aCalificaciones[j + 1]);
++
++                    if (intercambio)
++                    {
++                        int auxCalif = aCalificaciones[j];
++                        aCalificaciones[j] = aCalificaciones[j + 1];
++                        aCalificaciones[j + 1] = auxCalif;
++
++                        string auxNombre = aNombres[j];
++                        aNombres[j] = aNombres[j + 1];
++                        aNombres[j + 1] = auxNombre;
++                    }
++                }
++            }
++        }
++
+         static void Main(string[] args)
+         {
+             int[] aCalificacion = new int[15];
+             string[] aNombres = new string[15];
+             bool datosCargados = false;
+             string opcion;
+ 
+             do
+             {
+                 Menu();
+                 opcion = Console.ReadLine();
+ 
+                 switch (opcion)
+                 {
+                     case "1":
+                         Cargar(out aCalificacion, out aNombres);
+                         datosCargados = true;
+                         break;
+ 
+                     case "2":
+                         if (datosCargados)
+-                            Console.WriteLine($" Mejor calificación: {aCalificacion.Max()}");
++                        {
++                            OrdenarBurbuja(aCalificacion, aNombres, false);
++                            Console.WriteLine($"Mayor calificación: {aCalificacion[0]} por {aNombres[0]}");
++                        }
+                         else
+                             Console.WriteLine(" Primero debe cargar los datos.");
+                         break;
+ 
+                     case "3":
+                         if (datosCargados)
+-                            Console.WriteLine($" Menor calificación: {aCalificacion.Min()}");
++                        {
++                            OrdenarBurbuja(aCalificacion, aNombres, true);
++                            Console.WriteLine($" Menor calificación: {aCalificacion[0]} por {aNombres[0]}");
++                        }
+                         else
+                             Console.WriteLine("Primero debe cargar los datos.");
+                         break;
+ 
+                     case "4":
+                         if (datosCargados)
+                         {
++                            OrdenarBurbuja(aCalificacion, aNombres, true);
+                             bool hayRepetidos = false;
+-                            for (int i = 0; i < aCalificacion.Length; i++)
++                            for (int i = 0; i < aCalificacion.Length - 1; i++)
+                             {
+-                                for (int j = i + 1; j < aCalificacion.Length; j++)
++                                if (aCalificacion[i] == aCalificacion[i + 1])
+                                 {
+-                                    if (aCalificacion[i] == aCalificacion[j])
+-                                    {
+-                                        hayRepetidos = true;
+-                                        break;
+-                                    }
++                                    hayRepetidos = true;
++                                    break;
+                                 }
+-                                if (hayRepetidos) break;
+                             }
+ 
+                             Console.WriteLine(hayRepetidos
+                                 ? "Hay calificaciones repetidas."
+                                 : " No hay calificaciones repetidas.");
+                         }
+                         else
+                             Console.WriteLine(" Primero debe cargar los datos.");
+                         break;
+ 
+                     case "5":
+                         if (datosCargados)
++                        {
++                            OrdenarBurbuja(aCalificacion, aNombres, true);
+                             MostrarListado(aCalificacion, aNombres);
++                        }
+                         else
+                             Console.WriteLine("Primero debe cargar los datos.");
+                         break;
+ 
+                     case "0":
+                         Console.WriteLine(" Fin del programa.");
+                         break;
+ 
+                     default:
+                         Console.WriteLine(" Opción inválida.");
+                         break;
+                 }
+ 
+                 Console.WriteLine(); // Línea en blanco
+             }
+             while (opcion != "0");
+         }
+     }
+ }
